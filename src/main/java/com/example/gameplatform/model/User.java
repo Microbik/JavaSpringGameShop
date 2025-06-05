@@ -9,12 +9,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.example.gameplatform.model.Role;
-import com.example.gameplatform.model.Genre;
-import com.example.gameplatform.model.UserGame;
-import com.example.gameplatform.model.UserAchievement;
-import com.example.gameplatform.model.UserAddon;
-
 @Entity
 @Table(name = "users")
 public class User {

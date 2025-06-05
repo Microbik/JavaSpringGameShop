@@ -21,9 +21,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // Database
-    runtimeOnly 'org.postgresql:postgresql' // Only runtime (not needed at compile time)
+    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.liquibase:liquibase-core'
-    implementation 'com.h2database:h2' // For testing (if needed)
 
     // Discord (JDA)
     implementation 'net.dv8tion:JDA:5.0.0-beta.20'
