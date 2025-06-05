@@ -42,7 +42,6 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        // В реальном проекте здесь следует возвращать DTO без sensitive данных
         return ResponseEntity.ok(Map.of(
                 "id", user.getId(),
                 "name", user.getName(),
