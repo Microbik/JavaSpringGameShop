@@ -1,41 +1,57 @@
 package com.example.gameplatform.controller;
 
+import com.example.gameplatform.dto.LoginRequest;
+import com.example.gameplatform.dto.UserRegistrationDto;
 import com.example.gameplatform.model.Role;
 import com.example.gameplatform.model.User;
 import com.example.gameplatform.repository.RoleRepository;
 import com.example.gameplatform.repository.UserRepository;
+import com.example.gameplatform.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public String register(@RequestParam String email, @RequestParam String password) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            return "Пользователь уже существует";
+    public ResponseEntity<String> register(@RequestBody UserRegistrationDto dto) {
+        if (userService.findByEmail(dto.email).isPresent()) {
+            return ResponseEntity.badRequest().body("Пользователь уже существует");
+        }
+        userService.register(dto);
+        return ResponseEntity.ok("Регистрация успешна");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        User user = userService.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        Role defaultRole = roleRepository.findByName("Игрок")
-                .orElseThrow(() -> new RuntimeException("Default role not found"));
-
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(defaultRole);
-        user.setName("Новый пользователь");
-        user.setAge(18);
-        user.setExperiencePoints(0);
-
-        userRepository.save(user);
-        return "Регистрация успешна";
+        // В реальном проекте здесь следует возвращать DTO без sensitive данных
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
+                "name", user.getName(),
+                "email", user.getEmail(),
+                "role", user.getRole().getName()
+        ));
     }
+
 }
+
+
 

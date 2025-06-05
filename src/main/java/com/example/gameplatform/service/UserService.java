@@ -4,6 +4,7 @@ import com.example.gameplatform.dto.UserRegistrationDto;
 import com.example.gameplatform.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     List<User> getAllUsers();
@@ -12,5 +13,6 @@ public interface UserService {
     User updateUser(Long id, User updatedUser);
     void deleteUser(Long id);
     void register(UserRegistrationDto dto);
+    Optional<User> findByEmail(String email);
 
 }

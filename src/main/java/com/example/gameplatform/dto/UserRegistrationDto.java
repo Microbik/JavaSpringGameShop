@@ -6,3 +6,4 @@ public class UserRegistrationDto {
     public String password;
     public int age;
 }
+
