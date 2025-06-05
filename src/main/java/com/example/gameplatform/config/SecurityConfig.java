@@ -2,6 +2,7 @@ package com.example.gameplatform.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,7 +23,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("api/users/**").hasRole("ADMIN")// <-- исправлено
+                        .requestMatchers("api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/purchases/**").hasRole("Player")
+                        .requestMatchers(HttpMethod.POST, "/api/balance/top-up").authenticated()
+                        .requestMatchers("api/games/**").hasAnyRole("GameManager", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
