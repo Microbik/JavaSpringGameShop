@@ -16,5 +16,5 @@ CREATE INDEX IF NOT EXISTS idx_achievements_highxp ON achievements(experiencepoi
 -- Индекс для games
 CREATE INDEX IF NOT EXISTS idx_games_name_gin ON games USING GIN (name gin_trgm_ops);
 
-INSERT INTO roles (name) VALUES ('Player');
-
+INSERT INTO roles (role_id, name) VALUES (1, 'USER') ON CONFLICT DO NOTHING;
+INSERT INTO roles (role_id, name) VALUES (2, 'ADMIN') ON CONFLICT DO NOTHING;
