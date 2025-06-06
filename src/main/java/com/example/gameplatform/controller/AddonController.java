@@ -1,0 +1,54 @@
+package com.example.gameplatform.controller;
+
+import com.example.gameplatform.model.Addon;
+import com.example.gameplatform.service.AddonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/addons")
+public class AddonController {
+
+    private final AddonService addonService;
+
+    @Autowired
+    public AddonController(AddonService addonService) {
+        this.addonService = addonService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Addon>> getAllAddons() {
+        return ResponseEntity.ok(addonService.getAllAddons());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Addon> getAddonById(@PathVariable Long id) {
+        return ResponseEntity.ok(addonService.getAddonById(id));
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    public ResponseEntity<Addon> createAddon(@RequestBody Addon addon) {
+        return ResponseEntity.ok(addonService.createAddon(addon));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    public ResponseEntity<Addon> updateAddon(
+            @PathVariable Long id,
+            @RequestBody Addon addonDetails
+    ) {
+        return ResponseEntity.ok(addonService.updateAddon(id, addonDetails));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteAddon(@PathVariable Long id) {
+        addonService.deleteAddon(id);
+        return ResponseEntity.noContent().build();
+    }
+}
