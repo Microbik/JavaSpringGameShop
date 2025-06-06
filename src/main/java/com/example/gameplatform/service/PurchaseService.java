@@ -1,17 +1,13 @@
 package com.example.gameplatform.service;
 
 import com.example.gameplatform.dto.PurchaseResult;
-import com.example.gameplatform.model.Game;
-import com.example.gameplatform.model.User;
-import com.example.gameplatform.model.UserGame;
-import com.example.gameplatform.repository.GameRepository;
-import com.example.gameplatform.repository.UserGameRepository;
-import com.example.gameplatform.repository.UserRepository;
+import com.example.gameplatform.model.*;
+import com.example.gameplatform.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class PurchaseService {
@@ -19,13 +15,55 @@ public class PurchaseService {
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final UserGameRepository userGameRepository;
+    private final AddonRepository addonRepository;
+    private final UserAddonRepository userAddonRepository;
+
 
     public PurchaseService(UserRepository userRepository,
                            GameRepository gameRepository,
-                           UserGameRepository userGameRepository) {
+                           UserGameRepository userGameRepository,
+                           AddonRepository addonRepository,
+                           UserAddonRepository userAddonRepository) {
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.userGameRepository = userGameRepository;
+        this.addonRepository = addonRepository;
+        this.userAddonRepository = userAddonRepository;
+    }
+
+    @Transactional
+    public PurchaseResult purchaseAddon(Long userId, Long addonId) {
+        Optional<Addon> addonOpt = addonRepository.findById(addonId);
+        if (addonOpt.isEmpty()) {
+            return new PurchaseResult(false, "Addon not found");
+        }
+
+        Addon addon = addonOpt.get();
+        Long gameId = addon.getGame().getId();
+
+        if (!userGameRepository.existsByUserIdAndGameId(userId, gameId)) {
+            return new PurchaseResult(false, "User does not own the base game required for this addon");
+        }
+
+        if (userAddonRepository.existsByUserIdAndAddonId(userId, addonId)) {
+            return new PurchaseResult(false, "Addon already purchased");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (user.getBalance().compareTo(addon.getPrice()) < 0) {
+            return new PurchaseResult(false, "Insufficient funds to buy the addon");
+        }
+
+        // Списание средств
+        user.setBalance(user.getBalance().subtract(addon.getPrice()));
+        userRepository.save(user);
+
+        UserAddon userAddon = new UserAddon(user, addon);
+        userAddonRepository.save(userAddon);
+
+        return new PurchaseResult(true, "Addon purchased successfully");
     }
 
     @Transactional
@@ -58,3 +96,4 @@ public class PurchaseService {
         return new PurchaseResult(true, "Покупка успешно завершена");
     }
 }
+
