@@ -1,4 +1,4 @@
-package com.example.gameplatform.service.impl;
+package com.example.gameplatform.service;
 
 import com.example.gameplatform.model.Genre;
 import com.example.gameplatform.repository.GenreRepository;
