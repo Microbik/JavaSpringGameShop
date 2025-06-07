@@ -1,5 +1,7 @@
 package com.example.gameplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -22,16 +24,15 @@ public class UserGenre {
     @Column(name = "usergenre_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
+    @JsonBackReference("user-genres")
     private Genre genre;
-
-    @Column(name = "preference_level")
-    private Integer preferenceLevel; // Дополнительное поле для хранения уровня предпочтения
 
     public UserGenre(User user, Genre genre) {
         this.user = user;

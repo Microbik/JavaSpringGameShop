@@ -1,5 +1,6 @@
 package com.example.gameplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -15,8 +16,9 @@ public class Achievement {
     @Column(name = "achievement_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
+    @JsonIgnore
     private Game game;
 
     @Column(nullable = false)
@@ -27,6 +29,7 @@ public class Achievement {
     private Integer experiencePoints;
 
     @OneToMany(mappedBy = "achievement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<UserAchievement> users = new HashSet<>();
 
     // Конструкторы

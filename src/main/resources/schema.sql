@@ -16,9 +16,9 @@ CREATE INDEX IF NOT EXISTS idx_achievements_highxp ON achievements(experiencepoi
 -- Индекс для games
 CREATE INDEX IF NOT EXISTS idx_games_name_gin ON games USING GIN (name gin_trgm_ops);
 
-INSERT INTO roles (role_id, name) VALUES (1, 'Player') ON CONFLICT DO NOTHING;
+INSERT INTO roles (role_id, name) VALUES (1, 'PLAYER') ON CONFLICT DO NOTHING;
 INSERT INTO roles (role_id, name) VALUES (2, 'ADMIN') ON CONFLICT DO NOTHING;
-INSERT INTO roles (role_id, name) VALUES (3, 'GameManager') ON CONFLICT DO NOTHING;
+INSERT INTO roles (role_id, name) VALUES (3, 'GAMEMANAGER') ON CONFLICT DO NOTHING;
 
 insert into "users" ("name", "email", "password", "role_id", "age", "balance", "experiencepoints") values
                                                                                                        ('Thegre', 'aibaa@example.com', 'J35ih35j2', 1, 25, 100.00, 0),

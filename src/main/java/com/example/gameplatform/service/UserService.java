@@ -14,5 +14,5 @@ public interface UserService {
     void deleteUser(Long id);
     void register(UserRegistrationDto dto);
     Optional<User> findByEmail(String email);
-
+    List<User> getAllUsersWithDetails();
 }

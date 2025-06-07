@@ -1,5 +1,7 @@
 package com.example.gameplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -22,12 +24,14 @@ public class UserAddon {
     @Column(name = "useraddon_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "addon_id", nullable = false)
     private Addon addon;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("user-addons")
+    @JsonIgnore
     private User user;
 
     @Column(nullable = false, name = "purchase_date")

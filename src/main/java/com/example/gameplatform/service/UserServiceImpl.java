@@ -6,6 +6,8 @@ import com.example.gameplatform.model.User;
 import com.example.gameplatform.repository.RoleRepository;
 import com.example.gameplatform.repository.UserRepository;
 import com.example.gameplatform.service.UserService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    @Transactional
+    public List<User> getAllUsersWithDetails() {
+        return userRepository.findAllWithDetails();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.gameplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,7 +17,7 @@ public class Game {
     @Column(name = "game_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
@@ -41,6 +42,7 @@ public class Game {
     private Set<Achievement> achievements = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<UserGame> users = new HashSet<>();
 
     // Конструкторы

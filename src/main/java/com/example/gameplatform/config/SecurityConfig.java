@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/genres/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/achievements/**").authenticated()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/purchases/**").hasAnyRole("Player", "ADMIN")
                         .requestMatchers("/api/addons/**").hasAnyRole("GameManager", "ADMIN")
                         .requestMatchers("/api/addon-purchases/**").hasAnyRole("Player", "ADMIN")

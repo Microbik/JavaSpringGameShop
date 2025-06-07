@@ -138,7 +138,6 @@
             <column name="genre_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="preference_level" type="INT"/>
         </createTable>
     </changeSet>
     <changeSet id="1749127142958-10" author="bmisa">

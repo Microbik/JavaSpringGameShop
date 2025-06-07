@@ -1,5 +1,6 @@
 package com.example.gameplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -15,8 +16,9 @@ public class Addon {
     @Column(name = "addon_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
+    @JsonIgnore
     private Game game;
 
     @Column(nullable = false)
@@ -30,6 +32,7 @@ public class Addon {
     private AddonType type;
 
     @OneToMany(mappedBy = "addon", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<UserAddon> users = new HashSet<>();
 
     // Перечисление типов дополнений

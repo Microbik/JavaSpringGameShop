@@ -74,4 +74,9 @@ public class SecurityUserDetails implements UserDetails {
     public Serializable getBalance() {
         return user.getBalance();
     }
+
+    public boolean isAdmin() {
+        return getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+    }
 }
