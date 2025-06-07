@@ -37,11 +37,12 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/games/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/games/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/addons/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/genres/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/achievements/**").authenticated()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/favourite-genre/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/purchases/**").hasAnyRole("Player", "ADMIN")
                         .requestMatchers("/api/addons/**").hasAnyRole("GameManager", "ADMIN")
