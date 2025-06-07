@@ -21,11 +21,13 @@ public class AddonController {
     }
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Addon>> getAllAddons() {
         return ResponseEntity.ok(addonService.getAllAddons());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Addon> getAddonById(@PathVariable Long id) {
         return ResponseEntity.ok(addonService.getAddonById(id));
     }

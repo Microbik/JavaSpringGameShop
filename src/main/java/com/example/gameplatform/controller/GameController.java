@@ -17,11 +17,13 @@ public class GameController {
     private final GameService gameService;
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public List<Game> getAll() {
         return gameService.getAll();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Game> getById(@PathVariable Long id) {
         return ResponseEntity.of(gameService.getById(id));
     }

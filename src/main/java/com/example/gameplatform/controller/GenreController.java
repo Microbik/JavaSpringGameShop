@@ -21,12 +21,14 @@ public class GenreController {
 
     // GET Все жанры (доступно всем)
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Genre>> getAllGenres() {
         return ResponseEntity.ok(genreService.getAllGenres());
     }
 
     // GET Жанр по ID (доступно всем)
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
         return ResponseEntity.ok(genreService.getGenreById(id));
     }
