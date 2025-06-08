@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRegistrationDto dto) {
 
-        Role role = roleRepository.findByName("Player")
-                .orElseThrow(() -> new RuntimeException("Role 'Player' not found"));
+        Role role = roleRepository.findByName("PLAYER")
+                .orElseThrow(() -> new RuntimeException("Role 'PLAYER' not found"));
 
         User user = new User();
         user.setName(dto.name);

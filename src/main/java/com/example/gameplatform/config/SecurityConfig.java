@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/achievements/**").hasAnyRole("GameManager", "ADMIN")
                         .requestMatchers("/api/user-achievements/**").hasAnyRole("GameManager", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/balance/top-up").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/balance/current").authenticated()
                         .requestMatchers("/api/games/**").hasAnyRole("GameManager", "ADMIN")
                         .requestMatchers("/api/genres/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
