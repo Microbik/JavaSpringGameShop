@@ -5,11 +5,13 @@ import com.example.gameplatform.model.*;
 import com.example.gameplatform.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseService {
 
     private final UserRepository userRepository;
@@ -17,19 +19,6 @@ public class PurchaseService {
     private final UserGameRepository userGameRepository;
     private final AddonRepository addonRepository;
     private final UserAddonRepository userAddonRepository;
-
-
-    public PurchaseService(UserRepository userRepository,
-                           GameRepository gameRepository,
-                           UserGameRepository userGameRepository,
-                           AddonRepository addonRepository,
-                           UserAddonRepository userAddonRepository) {
-        this.userRepository = userRepository;
-        this.gameRepository = gameRepository;
-        this.userGameRepository = userGameRepository;
-        this.addonRepository = addonRepository;
-        this.userAddonRepository = userAddonRepository;
-    }
 
     @Transactional
     public PurchaseResult purchaseAddon(Long userId, Long addonId) {

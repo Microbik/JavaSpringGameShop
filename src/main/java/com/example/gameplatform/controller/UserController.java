@@ -1,5 +1,6 @@
 package com.example.gameplatform.controller;
 
+import com.example.gameplatform.model.Genre;
 import com.example.gameplatform.model.User;
 import com.example.gameplatform.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -46,5 +49,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/get-genres")
+    public ResponseEntity<Set<Genre>> getUserFavoriteGenres(@RequestBody Map<String, Long> request) {
+        Long userId = request.get("userId");
+        Set<Genre> favoriteGenres = userService.getUserFavoriteGenres(userId);
+        return ResponseEntity.ok(favoriteGenres);
     }
 }

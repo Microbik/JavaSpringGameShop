@@ -1,19 +1,25 @@
 package com.example.gameplatform.service;
 
 import com.example.gameplatform.dto.UserRegistrationDto;
+import com.example.gameplatform.model.Genre;
 import com.example.gameplatform.model.Role;
 import com.example.gameplatform.model.User;
+import com.example.gameplatform.model.UserGenre;
 import com.example.gameplatform.repository.RoleRepository;
 import com.example.gameplatform.repository.UserRepository;
 import com.example.gameplatform.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +52,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Set<Genre> getUserFavoriteGenres(Long userId) {
+        return userRepository.findFavoriteGenresByUserId(userId);
     }
 
     @Override

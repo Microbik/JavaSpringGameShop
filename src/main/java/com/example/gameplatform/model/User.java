@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -166,6 +167,7 @@ public class User {
                 ", role=" + role.getName() +
                 '}';
     }
+
 }
 
 

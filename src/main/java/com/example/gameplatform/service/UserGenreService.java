@@ -5,25 +5,20 @@ import com.example.gameplatform.model.*;
 import com.example.gameplatform.repository.UserGenreRepository;
 import com.example.gameplatform.repository.UserRepository;
 import com.example.gameplatform.repository.GenreRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserGenreService {
 
     private final UserGenreRepository userGenreRepository;
     private final UserRepository userRepository;
     private final GenreRepository genreRepository;
 
-    public UserGenreService(UserGenreRepository userGenreRepository,
-                            UserRepository userRepository,
-                            GenreRepository genreRepository) {
-        this.userGenreRepository = userGenreRepository;
-        this.userRepository = userRepository;
-        this.genreRepository = genreRepository;
-    }
 
     @Transactional
     public GenreToggleResponse toggleUserGenre(String username, Long genreId) {
