@@ -18,7 +18,7 @@ public class UserAchievementController {
 
     private final UserAchievementService userAchievementService;
 
-    @PreAuthorize("hasRole('GameManager') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     @PostMapping("/assign")
     public ResponseEntity<String> assignAchievement(@RequestBody AchievementAssignRequest request) {
         boolean success = userAchievementService.assignAchievement(

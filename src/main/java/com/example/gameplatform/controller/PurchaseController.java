@@ -23,7 +23,7 @@ public class PurchaseController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Player')")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<PurchaseResult> purchaseGame(@RequestBody Map<String, Long> payload) {
         Long gameId = payload.get("gameId");
 

@@ -33,13 +33,13 @@ public class AddonController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Addon> createAddon(@RequestBody Addon addon) {
         return ResponseEntity.ok(addonService.createAddon(addon));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Addon> updateAddon(
             @PathVariable Long id,
             @RequestBody Addon addonDetails

@@ -29,13 +29,13 @@ public class GameController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Game> create(@RequestBody Game game) {
         return ResponseEntity.status(HttpStatus.CREATED).body(gameService.create(game));
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('GameManager', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Game> update(@PathVariable Long id, @RequestBody Game game) {
         return ResponseEntity.of(gameService.update(id, game));
     }

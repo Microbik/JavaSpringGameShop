@@ -22,7 +22,7 @@ public class AddonPurchaseController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Player')")
+    @PreAuthorize("hasRole('PLAYER')")
     public ResponseEntity<PurchaseResult> purchaseAddon(@RequestBody Map<String, Long> payload) {
         Long addonId = payload.get("addonId");
 
