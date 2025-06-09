@@ -19,28 +19,24 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-    // GET Все жанры (доступно всем)
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Genre>> getAllGenres() {
         return ResponseEntity.ok(genreService.getAllGenres());
     }
 
-    // GET Жанр по ID (доступно всем)
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
         return ResponseEntity.ok(genreService.getGenreById(id));
     }
 
-    // POST Создать жанр (только ADMIN)
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Genre> createGenre(@RequestBody Genre genre) {
         return ResponseEntity.ok(genreService.createGenre(genre));
     }
 
-    // PUT Обновить жанр (только ADMIN)
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Genre> updateGenre(
@@ -50,7 +46,6 @@ public class GenreController {
         return ResponseEntity.ok(genreService.updateGenre(id, genreDetails));
     }
 
-    // DELETE Удалить жанр (только ADMIN)
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {

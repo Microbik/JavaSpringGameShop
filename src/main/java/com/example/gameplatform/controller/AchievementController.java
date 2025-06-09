@@ -17,31 +17,27 @@ public class AchievementController {
 
     @Autowired
     public AchievementController(AchievementService achievementService) {
-        this.achievementService = achievementService; // Внедряем интерфейс
+        this.achievementService = achievementService;
     }
 
-    // GET Все достижения (доступно GameManager и ADMIN)
     @GetMapping
     @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<List<Achievement>> getAllAchievements() {
         return ResponseEntity.ok(achievementService.getAllAchievements());
     }
 
-    // GET Достижение по ID (доступно GameManager и ADMIN)
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Achievement> getAchievementById(@PathVariable Long id) {
         return ResponseEntity.ok(achievementService.getAchievementById(id));
     }
 
-    // POST Создать новое достижение (доступно GameManager и ADMIN)
     @PostMapping
     @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Achievement> createAchievement(@RequestBody Achievement achievement) {
         return ResponseEntity.ok(achievementService.createAchievement(achievement));
     }
 
-    // PUT Обновить достижение (доступно GameManager и ADMIN)
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Achievement> updateAchievement(
@@ -51,7 +47,6 @@ public class AchievementController {
         return ResponseEntity.ok(achievementService.updateAchievement(id, achievementDetails));
     }
 
-    // DELETE Удалить достижение (доступно только ADMIN)
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAchievement(@PathVariable Long id) {

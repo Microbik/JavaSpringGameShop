@@ -5,14 +5,12 @@ public class GenreToggleResponse {
     private Long genreId;
     private String genreName;
 
-    // Конструктор
     public GenreToggleResponse(String action, Long genreId, String genreName) {
         this.action = action;
         this.genreId = genreId;
         this.genreName = genreName;
     }
 
-    // Геттеры
     public String getAction() {
         return action;
     }

@@ -2,7 +2,6 @@ package com.example.gameplatform.controller;
 
 import com.example.gameplatform.dto.BalanceTopUpRequest;
 import com.example.gameplatform.service.BalanceService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -44,7 +42,7 @@ public class BalanceController {
             response.put("success", true);
             response.put("message", "Balance successfully topped up by " + amount);
             response.put("newBalance", newBalance);
-            response.put("currency", "USD");  // Можно сделать динамическим
+            response.put("currency", "USD");
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
