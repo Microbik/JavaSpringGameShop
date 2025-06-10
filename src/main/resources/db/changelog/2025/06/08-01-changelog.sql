@@ -167,7 +167,6 @@ ALTER TABLE user_genres
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- Индексы для users
-CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_hash_email ON users USING hash(email);
 
 -- Индексы для user_games
