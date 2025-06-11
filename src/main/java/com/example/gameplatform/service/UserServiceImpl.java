@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setBalance(updatedUser.getBalance());
         user.setExperiencePoints(updatedUser.getExperiencePoints());
         user.setRole(updatedUser.getRole());
+        user.setPassword(updatedUser.getPassword());
         return userRepository.save(user);
     }
 

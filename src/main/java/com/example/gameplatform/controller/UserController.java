@@ -1,9 +1,12 @@
 package com.example.gameplatform.controller;
 
 import com.example.gameplatform.model.Genre;
+import com.example.gameplatform.model.Role;
 import com.example.gameplatform.model.User;
+import com.example.gameplatform.repository.RoleRepository;
 import com.example.gameplatform.service.SecurityUserDetails;
 import com.example.gameplatform.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +19,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final RoleRepository roleRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -68,5 +69,21 @@ public class UserController {
         Long userId = request.get("userId");
         Set<Genre> favoriteGenres = userService.getUserFavoriteGenres(userId);
         return ResponseEntity.ok(favoriteGenres);
+    }
+
+    @PostMapping("/set-role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> setUserRole(@RequestBody Map<String, Long> request) {
+        Long userId = request.get("userId");
+        Long roleId = request.get("roleId");
+
+        User user = userService.getUserById(userId);
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
+
+        user.setRole(role);
+        userService.updateUser(userId, user);
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -2,6 +2,7 @@ package com.example.gameplatform.controller;
 
 import com.example.gameplatform.dto.BalanceTopUpRequest;
 import com.example.gameplatform.service.BalanceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +17,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/balance")
+@RequiredArgsConstructor
 public class BalanceController {
 
     private final BalanceService balanceService;
-
-    public BalanceController(BalanceService balanceService) {
-        this.balanceService = balanceService;
-    }
 
     @PostMapping("/top-up")
     @PreAuthorize("isAuthenticated()")

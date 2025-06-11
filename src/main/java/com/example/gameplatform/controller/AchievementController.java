@@ -2,6 +2,7 @@ package com.example.gameplatform.controller;
 
 import com.example.gameplatform.model.Achievement;
 import com.example.gameplatform.service.AchievementService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,14 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/achievements")
+@RequiredArgsConstructor
 public class AchievementController {
 
     private final AchievementService achievementService;
-
-    @Autowired
-    public AchievementController(AchievementService achievementService) {
-        this.achievementService = achievementService;
-    }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")

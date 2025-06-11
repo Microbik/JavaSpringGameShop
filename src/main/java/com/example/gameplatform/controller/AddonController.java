@@ -2,6 +2,7 @@ package com.example.gameplatform.controller;
 
 import com.example.gameplatform.model.Addon;
 import com.example.gameplatform.service.AddonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,14 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/addons")
+@RequiredArgsConstructor
 public class AddonController {
 
     private final AddonService addonService;
-
-    @Autowired
-    public AddonController(AddonService addonService) {
-        this.addonService = addonService;
-    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")

@@ -3,6 +3,7 @@ package com.example.gameplatform.controller;
 import com.example.gameplatform.dto.PurchaseResult;
 import com.example.gameplatform.service.PurchaseService;
 import com.example.gameplatform.service.SecurityUserDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -13,13 +14,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/addon-purchases")
+@RequiredArgsConstructor
 public class AddonPurchaseController {
 
     private final PurchaseService purchaseService;
-
-    public AddonPurchaseController(PurchaseService purchaseService) {
-        this.purchaseService = purchaseService;
-    }
 
     @PostMapping
     @PreAuthorize("hasRole('PLAYER')")
