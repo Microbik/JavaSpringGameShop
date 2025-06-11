@@ -2,9 +2,12 @@ package com.example.gameplatform.controller;
 
 import com.example.gameplatform.model.Genre;
 import com.example.gameplatform.model.User;
+import com.example.gameplatform.service.SecurityUserDetails;
 import com.example.gameplatform.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +31,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<User> getUserById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal SecurityUserDetails currentUser
+    ) {
+        // Проверка: либо запрашиваем свой ID, либо пользователь - админ
+        if (!currentUser.isAdmin() && !currentUser.getId().equals(id)) {
+            throw new AccessDeniedException("You can only access your own profile");
+        }
+
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
