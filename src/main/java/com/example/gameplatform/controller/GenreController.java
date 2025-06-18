@@ -17,13 +17,11 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Genre>> getAllGenres() {
         return ResponseEntity.ok(genreService.getAllGenres());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
         return ResponseEntity.ok(genreService.getGenreById(id));
     }

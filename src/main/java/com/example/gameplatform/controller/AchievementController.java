@@ -18,13 +18,11 @@ public class AchievementController {
     private final AchievementService achievementService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<List<Achievement>> getAllAchievements() {
         return ResponseEntity.ok(achievementService.getAllAchievements());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('GAMEMANAGER', 'ADMIN')")
     public ResponseEntity<Achievement> getAchievementById(@PathVariable Long id) {
         return ResponseEntity.ok(achievementService.getAchievementById(id));
     }

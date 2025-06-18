@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
-
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -41,8 +42,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-            return;
+            // Позволяем исключению пройти дальше, чтобы его обработали соответствующие обработчики
+            SecurityContextHolder.clearContext();
+            request.setAttribute("exception", e); // Передаем исключение для обработки
         }
 
         filterChain.doFilter(request, response);

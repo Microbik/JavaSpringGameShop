@@ -16,13 +16,14 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-
         String errorMessage = "Authentication failed";
         Throwable cause = authException.getCause();
 
         if (authException instanceof BadCredentialsException) {
             errorMessage = "Invalid credentials";
-        } else if (cause instanceof JwtException) {
+        } else if (cause instanceof io.jsonwebtoken.ExpiredJwtException) {
+            errorMessage = "JWT token has expired";
+        } else if (cause instanceof io.jsonwebtoken.JwtException) {
             errorMessage = "Invalid JWT token: " + cause.getMessage();
         }
 

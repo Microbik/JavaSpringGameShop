@@ -45,11 +45,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -61,13 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(Long id, User updatedUser) {
         User user = getUserById(id);
-        user.setName(updatedUser.getName());
-        user.setEmail(updatedUser.getEmail());
-        user.setAge(updatedUser.getAge());
-        user.setBalance(updatedUser.getBalance());
-        user.setExperiencePoints(updatedUser.getExperiencePoints());
         user.setRole(updatedUser.getRole());
-        user.setPassword(updatedUser.getPassword());
         return userRepository.save(user);
     }
 

@@ -37,24 +37,12 @@ public class UserController {
             @PathVariable Long id,
             @AuthenticationPrincipal SecurityUserDetails currentUser
     ) {
-        // Проверка: либо запрашиваем свой ID, либо пользователь - админ
+
         if (!currentUser.isAdmin() && !currentUser.getId().equals(id)) {
-            throw new AccessDeniedException("You can only access your own profile");
+            throw new AccessDeniedException("Вы можете смотреть только свой профиль");
         }
 
         return ResponseEntity.ok(userService.getUserById(id));
-    }
-
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
-    }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
     @DeleteMapping("/{id}")
