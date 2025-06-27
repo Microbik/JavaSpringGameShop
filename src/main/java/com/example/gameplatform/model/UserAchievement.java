@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -36,7 +37,6 @@ public class UserAchievement {
     @Column(nullable = false, name = "unlock_date")
     private LocalDate unlockDate;
 
-    // Конструкторы
     public UserAchievement() {
         this.unlockDate = LocalDate.now();
     }
@@ -45,39 +45,6 @@ public class UserAchievement {
         this();
         this.user = user;
         this.achievement = achievement;
-    }
-
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Achievement getAchievement() {
-        return achievement;
-    }
-
-    public void setAchievement(Achievement achievement) {
-        this.achievement = achievement;
-    }
-
-    public LocalDate getUnlockDate() {
-        return unlockDate;
-    }
-
-    public void setUnlockDate(LocalDate unlockDate) {
-        this.unlockDate = unlockDate;
     }
 
     @Override

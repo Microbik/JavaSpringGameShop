@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -13,12 +14,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
 @Table(name = "user_addons")
+@Setter
+@Getter
+@NoArgsConstructor
 public class UserAddon {
-    // Геттеры и сеттеры
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "useraddon_id")
@@ -37,15 +38,10 @@ public class UserAddon {
     @Column(nullable = false, name = "purchase_date")
     private LocalDate purchaseDate;
 
-    // Конструкторы
-    public UserAddon() {
-        this.purchaseDate = LocalDate.now();
-    }
-
     public UserAddon(User user, Addon addon) {
-        this();
         this.user = user;
         this.addon = addon;
+        this.purchaseDate = LocalDate.now();
     }
 
     @Override

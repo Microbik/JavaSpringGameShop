@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,6 +16,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user_games")
+@Setter
+@Getter
+@NoArgsConstructor
+
 public class UserGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,48 +39,10 @@ public class UserGame {
     @Column(nullable = false, name = "purchase_date")
     private LocalDate purchaseDate;
 
-    // Конструкторы
-    public UserGame() {
-        this.purchaseDate = LocalDate.now();
-    }
-
     public UserGame(User user, Game game) {
-        this();
         this.user = user;
         this.game = game;
-    }
-
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
+        this.purchaseDate = LocalDate.now();
     }
 
     @Override

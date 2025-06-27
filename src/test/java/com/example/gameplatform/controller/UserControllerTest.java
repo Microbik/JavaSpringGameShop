@@ -58,7 +58,9 @@ class UserControllerTest {
         user.setEmail("user@example.com");
         user.setPassword("pass");
         user.setName("User");
-        user.setRole(new Role("USER"));
+        Role role = new Role();
+        role.setName("USER");
+        user.setRole(role);
     }
 
     @Test
@@ -91,7 +93,9 @@ class UserControllerTest {
     @WithMockUser
     void getUserFavoriteGenres_Success() throws Exception {
         Set<Genre> genres = new HashSet<>();
-        genres.add(new Genre("Action"));
+        Genre genre = new Genre();
+        genre.setName("Action");
+        genres.add(genre);
 
         when(userService.getUserFavoriteGenres(anyLong())).thenReturn(genres);
 
@@ -111,7 +115,9 @@ class UserControllerTest {
         User mockUser = new User();
         mockUser.setId(2L);
 
-        Role newRole = new Role("MODERATOR");
+        Role newRole = new Role();
+        newRole.setName("USER");
+        user.setRole(newRole);
         newRole.setId(2L);
 
         when(userService.getUserById(2L)).thenReturn(mockUser);

@@ -4,12 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "addons")
+@Setter
+@Getter
+@NoArgsConstructor
 public class Addon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,61 +42,8 @@ public class Addon {
     @JsonIgnore
     private Set<UserAddon> users = new HashSet<>();
 
-    // Перечисление типов дополнений
     public enum AddonType {
         DLC, IN_GAME_PURCHASE
-    }
-
-    // Конструкторы
-    public Addon() {}
-
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public AddonType getType() {
-        return type;
-    }
-
-    public void setType(AddonType type) {
-        this.type = type;
-    }
-
-    public Set<UserAddon> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<UserAddon> users) {
-        this.users = users;
     }
 
     @Override

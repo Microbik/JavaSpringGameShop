@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
+@Setter
+@Getter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,102 +65,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-addons")
     private Set<UserAddon> addons = new HashSet<>();
-
-    // Конструкторы
-    public User() {
-        this.balance = BigDecimal.ZERO;
-        this.experiencePoints = 0;
-    }
-
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public int getExperiencePoints() {
-        return experiencePoints;
-    }
-
-    public void setExperiencePoints(int experiencePoints) {
-        this.experiencePoints = experiencePoints;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    public Set<UserGame> getGames() {
-        return games;
-    }
-
-    public void setGames(Set<UserGame> games) {
-        this.games = games;
-    }
-
-    public Set<UserAchievement> getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(Set<UserAchievement> achievements) {
-        this.achievements = achievements;
-    }
-
-    public Set<UserAddon> getAddons() {
-        return addons;
-    }
-
-    public void setAddons(Set<UserAddon> addons) {
-        this.addons = addons;
-    }
 
     @Override
     public String toString() {
