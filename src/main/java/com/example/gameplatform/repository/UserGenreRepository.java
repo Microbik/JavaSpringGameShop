@@ -4,9 +4,11 @@ import com.example.gameplatform.model.UserGenre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface UserGenreRepository extends JpaRepository<UserGenre, Long> {
 
     @Query("SELECT ug FROM UserGenre ug WHERE ug.user.id = :userId AND ug.genre.id = :genreId")

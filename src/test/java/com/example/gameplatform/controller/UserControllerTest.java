@@ -59,7 +59,7 @@ class UserControllerTest {
         user.setPassword("pass");
         user.setName("User");
         Role role = new Role();
-        role.setName("USER");
+        role.setName("PLAYER");
         user.setRole(role);
     }
 
