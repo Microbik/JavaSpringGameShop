@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -87,6 +88,7 @@ public class BalanceControllerTest {
 		String requestBody = String.format("{\"userId\": %d, \"amount\": %s}", userId, amount);
 
 		mockMvc.perform(post("/api/balance/top-up")
+						.with(csrf())
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody))
 				.andExpect(status().isOk())
@@ -94,6 +96,83 @@ public class BalanceControllerTest {
 				.andExpect(jsonPath("$.message").value("Balance successfully topped up by " + amount))
 				.andExpect(jsonPath("$.newBalance").value(newBalance.doubleValue()))
 				.andExpect(jsonPath("$.currency").value("USD"));
+	}
+
+	@Test
+	@WithMockUser(username = "user@example.com", roles = "PLAYER")
+	public void topUpBalance_ByOwner_Success() throws Exception {
+		Long userId = 2L; // Тот же ID, что и у аутентифицированного пользователя
+		BigDecimal amount = new BigDecimal("30.00");
+		BigDecimal newBalance = new BigDecimal("80.00");
+
+		when(balanceService.topUpBalance(eq(userId), any(BigDecimal.class)))
+				.thenReturn(newBalance);
+
+		String requestBody = String.format("{\"userId\": %d, \"amount\": %s}", userId, amount);
+
+		mockMvc.perform(post("/api/balance/top-up")
+						.with(csrf())
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true))
+				.andExpect(jsonPath("$.message").value("Balance successfully topped up by " + amount))
+				.andExpect(jsonPath("$.newBalance").value(newBalance.doubleValue()))
+				.andExpect(jsonPath("$.currency").value("USD"));
+	}
+
+	@Test
+	@WithMockUser(username = "user@example.com", roles = "PLAYER")
+	public void topUpBalance_UnauthorizedUser_AccessDenied() throws Exception {
+		Long userId = 1L; // Чужой ID
+		BigDecimal amount = new BigDecimal("20.00");
+
+		String requestBody = String.format("{\"userId\": %d, \"amount\": %s}", userId, amount);
+
+		mockMvc.perform(post("/api/balance/top-up")
+						.with(csrf())
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	public void topUpBalance_InvalidAmount_BadRequest() throws Exception {
+		Long userId = 2L;
+		BigDecimal amount = new BigDecimal("-10.00"); // Неверная сумма
+
+		when(balanceService.topUpBalance(eq(userId), any(BigDecimal.class)))
+				.thenThrow(new IllegalArgumentException("Amount must be positive"));
+
+		String requestBody = String.format("{\"userId\": %d, \"amount\": %s}", userId, amount);
+
+		mockMvc.perform(post("/api/balance/top-up")
+						.with(csrf())
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(requestBody))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.success").value(false))
+				.andExpect(jsonPath("$.error").value("Amount must be positive"));
+	}
+
+	@Test
+	@WithMockUser(username = "user@example.com")
+	public void getCurrentBalance_Success() throws Exception {
+		Long userId = 2L;
+		BigDecimal balance = new BigDecimal("100.00");
+
+		when(balanceService.getCurrentBalance(userId)).thenReturn(balance);
+
+		mockMvc.perform(get("/api/balance/current"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").value(balance.doubleValue()));
+	}
+
+	@Test
+	public void getCurrentBalance_Unauthenticated_Forbidden() throws Exception {
+		mockMvc.perform(get("/api/balance/current"))
+				.andExpect(status().isForbidden());
 	}
 }
 

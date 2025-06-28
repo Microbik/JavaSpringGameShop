@@ -23,14 +23,10 @@ public class BalanceController {
     private final BalanceService balanceService;
 
     @PostMapping("/top-up")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN') or #request.userId == principal.id")
     public ResponseEntity<Map<String, Object>> topUpBalance(
             @RequestBody BalanceTopUpRequest request,
             @AuthenticationPrincipal SecurityUserDetails currentUser) {
-
-        if (!currentUser.isAdmin() && !currentUser.getId().equals(request.userId())) {
-            throw new AccessDeniedException("You can only top up your own balance");
-        }
 
         try {
             BigDecimal amount = request.amount().setScale(2, RoundingMode.HALF_UP);
