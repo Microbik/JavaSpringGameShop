@@ -140,7 +140,7 @@ public class BalanceControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	public void topUpBalance_InvalidAmount_BadRequest() throws Exception {
 		Long userId = 2L;
-		BigDecimal amount = new BigDecimal("-10.00"); // Неверная сумма
+		BigDecimal amount = new BigDecimal("-10.00");
 
 		when(balanceService.topUpBalance(eq(userId), any(BigDecimal.class)))
 				.thenThrow(new IllegalArgumentException("Amount must be positive"));
@@ -164,14 +164,16 @@ public class BalanceControllerTest {
 
 		when(balanceService.getCurrentBalance(userId)).thenReturn(balance);
 
-		mockMvc.perform(get("/api/balance/current"))
+		mockMvc.perform(get("/api/balance/current")
+				.with(csrf()))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$").value(balance.doubleValue()));
 	}
 
 	@Test
 	public void getCurrentBalance_Unauthenticated_Forbidden() throws Exception {
-		mockMvc.perform(get("/api/balance/current"))
+		mockMvc.perform(get("/api/balance/current")
+				.with(csrf()))
 				.andExpect(status().isForbidden());
 	}
 }
